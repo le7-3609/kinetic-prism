@@ -1,0 +1,80 @@
+<section class="dashboard">
+  <!-- ── Header ──────────────────────────────────────────────────────── -->
+  <header class="dashboard-header">
+    <h1 class="text-3xl font-bold tracking-tight text-kp-text">
+      <span class="text-kp-accent neon-glow-text">The Kinetic</span> Prism
+    </h1>
+    <p class="text-sm text-kp-text-muted mt-1 tracking-wide">
+      AI-Powered Core Power Analytics
+    </p>
+  </header>
+
+  <!-- ── Main Grid ───────────────────────────────────────────────────── -->
+  <div class="dashboard-grid">
+    <!-- Orb Panel -->
+    <div class="panel orb-panel">
+      <kp-core-power-orb [intensity]="glowIntensity()" />
+    </div>
+
+    <!-- Metrics Panel -->
+    <div class="panel metrics-panel">
+      <h2 class="text-lg font-semibold text-kp-text-muted uppercase tracking-widest mb-6">
+        Analysis Results
+      </h2>
+
+      @if (metric()) {
+        <div class="metric-grid animate-fade-in">
+          <div class="metric-card neon-border">
+            <span class="metric-label">Score</span>
+            <span class="metric-value text-kp-accent neon-glow-text">
+              {{ metric()!.score | number:'1.1-1' }}
+            </span>
+          </div>
+          <div class="metric-card neon-border">
+            <span class="metric-label">Level</span>
+            <span class="metric-value text-kp-accent-light">
+              {{ metric()!.power_level }}
+            </span>
+          </div>
+          <div class="metric-card neon-border">
+            <span class="metric-label">Glow</span>
+            <span class="metric-value font-mono text-kp-text">
+              {{ metric()!.glowing_intensity | percent:'1.0-0' }}
+            </span>
+          </div>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-state-icon">⬡</div>
+          <p class="text-kp-text-muted text-sm">
+            Initiate a scan to reveal your Core Power.
+          </p>
+        </div>
+      }
+
+      <!-- Error Display -->
+      @if (errorMessage()) {
+        <div class="error-banner animate-fade-in">
+          <span class="text-kp-danger font-medium text-sm">⚠ {{ errorMessage() }}</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- ── Action Bar ──────────────────────────────────────────────────── -->
+  <div class="action-bar">
+    <button
+      id="btn-scan-workout"
+      class="scan-button neon-glow"
+      [disabled]="isLoading()"
+      (click)="scanWorkout()"
+    >
+      @if (isLoading()) {
+        <span class="scan-button-spinner"></span>
+        <span>Analysing…</span>
+      } @else {
+        <span>⚡ Scan Workout</span>
+      }
+    </button>
+  </div>
+</section>
